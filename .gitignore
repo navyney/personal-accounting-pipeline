@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Project data & output
+data/*.csv
+output/
+raw/
+staged/
+analytics/
+
+# Spark
+metastore_db/
+derby.log
+spark-warehouse/
