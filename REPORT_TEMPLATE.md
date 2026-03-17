@@ -1,8 +1,8 @@
 # Midterm Report
 
-**Student Name:** _______________  
-**Student ID:** _______________  
-**Date:** _______________
+**Student Name:** Boontharika Korkitrotjana 
+**Student ID:** 660610769
+**Date:** 18 Mar 2026
 
 ---
 
@@ -10,19 +10,19 @@
 
 > How many total transactions are there?
 
-_Your answer here._
+_There are 72,586,000 total transactions in the dataset._
 
 > How many unique family members, merchants, and categories?
 
-_Your answer here._
+_There are 4 unique family members, 48 unique merchants, and 18 unique spending categories._
 
 > How many rows have null or empty `amount` values?
 
-_Your answer here._
+_1,450,421 rows contain null or empty values in the amount column._
 
 > What is the date range of the transactions?
 
-_Your answer here._
+_The transaction dates range from 2010-01-01 to 2025-12-31_
 
 ---
 
