@@ -30,15 +30,15 @@ _The transaction dates range from 2010-01-01 to 2025-12-31_
 
 > What join type did you use for enriching transactions, and why?
 
-_Your answer here._
+_Left join because we want to keep all transactions even if some of merchant ids do not exist in the merchants lookup table._
 
 > How many transactions have no matching merchant in the merchants table?
 
-_Your answer here._
+_Transactions with missing merchant:  212089_
 
 > What would happen if you used an inner join instead?
 
-_Your answer here._
+_If an inner join were used instead of a left join, transactions that do not have matching merchant records would be removed from the dataset. This would lead to data loss and inaccurate spending analysis because those transactions would no longer be counted in the analytics layer. Since the transactions table is the source of truth for spending activity, we want to preserve all records even if lookup information is missing. Therefore, a left join is the safest option for maintaining complete transaction data._
 
 ---
 
@@ -49,31 +49,40 @@ _Your answer here._
 _Your answer here. Show your calculation:_
 
 | Year | Avg Amount | YoY Change (%) |
-|------|-----------|----------------|
-| 2016 | | |
-| 2017 | | |
-| 2018 | | |
-| 2019 | | |
-| 2020 | | |
-| 2021 | | |
-| 2022 | | |
-| 2023 | | |
-| 2024 | | |
-| 2025 | | |
+|------|-----------|-----------------|
+| 2016 | 55.982521244951755| - |
+| 2017 | 57.11752221721342| 2.0274202501446177|
+| 2018 | 58.33021620698671| 2.1231558070070213|
+| 2019 | 59.46755453944663| 1.9498270474843364|
+| 2020 | 60.58627702195049| 1.8812316920847536|
+| 2021 |  61.8715038857499| 2.1213167848781604|
+| 2022 | 63.08090033879223| 1.9546905717300271|
+| 2023 |   64.412011563428| 2.1101652282809638|
+| 2024 | 65.54140422011058| 1.7533882722641632|
+| 2025 | 66.94052935095615| 2.1347194914329766|
 
-_Your explanation:_
+_The average transaction amount shows a steady upward trend from 2016 to 2025. The year-over-year growth rate is approximately around 2% per year. This gradual increase is likely due to inflation and rising costs of goods and services, which causes the average transaction value to increase over time._
 
 > Which category has the highest total spending? Which has grown the fastest over 10 years?
 
-_Your answer here._
+_The category with the highest total spending is Groceries, with approximately 818 million in total spending._
+_From the yearly category spending table, Electronics and Education appear to show strong growth over time, likely due to increased spending on technology and educational services._
 
 > Compare spending between family members. Who spends the most? On what?
 
-_Your answer here._
+_The family member who spends the most is MEM01, with approximately 1.96 billion in total spending. The largest spending categories for this member include Groceries, Education, Electronics, and Clothing, which represent major household and lifestyle expenses._
 
 > What percentage of transactions fall in each spending tier? Has this distribution changed over the years?
 
-_Your answer here._
++-------------+--------+------------------+
+|spending_tier|   count|        percentage|
++-------------+--------+------------------+
+|        small|35059036| 49.53261597697125|
+|       medium|22158435| 31.30620167381895|
+|        micro| 9910619|14.002064546813974|
+|        large| 3651608| 5.159117802395823|
++-------------+--------+------------------+
+_The distribution of spending tiers remains relatively stable across the years. Small transactions consistently represent the largest portion of purchases, followed by medium transactions. Large transactions remain a small percentage each year, indicating that most family spending consists of frequent low-value purchases._
 
 ---
 

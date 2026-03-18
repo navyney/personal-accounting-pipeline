@@ -56,6 +56,6 @@ def enrich_with_lookups(
         "category_name",
         "budget_type",
         "merchant_name",
-        "merchant_type"
+        "merchant_type",
     )
     return df_result
