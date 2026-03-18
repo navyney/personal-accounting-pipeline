@@ -74,14 +74,13 @@ _The family member who spends the most is MEM01, with approximately 1.96 billion
 
 > What percentage of transactions fall in each spending tier? Has this distribution changed over the years?
 
-+-------------+--------+------------------+
 |spending_tier|   count|        percentage|
-+-------------+--------+------------------+
+|-------------|--------|------------------|
 |        small|35059036| 49.53261597697125|
 |       medium|22158435| 31.30620167381895|
 |        micro| 9910619|14.002064546813974|
 |        large| 3651608| 5.159117802395823|
-+-------------+--------+------------------+
+|-------------|--------|------------------|
 _The distribution of spending tiers remains relatively stable across the years. Small transactions consistently represent the largest portion of purchases, followed by medium transactions. Large transactions remain a small percentage each year, indicating that most family spending consists of frequent low-value purchases._
 
 ---
