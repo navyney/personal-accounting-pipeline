@@ -126,7 +126,7 @@ _The merchant name should be updated in the merchant reference data (such as the
 
 > "Our daughter started college and has her own credit card now. How do we add a new family member to the system without breaking existing data?"
 
-_A new family member can be added by inserting a new record in the members reference data wth a new member id. Future transactions will reference this new member id when they are ingested. Historical transactions remain unchanged because they are already reference existing members. This approach prevents breaking existing data._
+_A new family member can be added by inserting a new record in the members reference data with a new member id. Future transactions will reference this new member id when they are ingested. Historical transactions remain unchanged because they already reference existing member records. This approach prevents breaking existing data._
 
 ---
 
@@ -142,7 +142,7 @@ _The pipeline first loads transaction data from the raw layer. The transactions 
 
 > "Last month's bank export had 500 duplicate transactions. How does your pipeline handle this? If it doesn't yet, what would you add?"
 
-_Duplicate transactions should be handled in the staging layer during data cleaning. A deduplicaion step can be added using a unique transcation identifier such as ransaction id. For example, using the dropDuplicates() to remove repeated records. This prevents duplicate transactions from affecting analytics results._
+_Duplicate transactions should be handled in the staging layer during data cleaning. A deduplication step can be added using a unique transaction identifier such as transaction id. For example, using the dropDuplicates() to remove repeated records. This prevents duplicate transactions from affecting analytics results._
 
 ---
 
