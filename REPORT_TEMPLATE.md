@@ -18,7 +18,7 @@ _There are 4 unique family members, 48 unique merchants, and 18 unique spending 
 
 > How many rows have null or empty `amount` values?
 
-_1,450,421 rows contain null or empty values in the amount column._
+_1,450,421 rows._
 
 > What is the date range of the transactions?
 
@@ -66,7 +66,7 @@ _The average transaction amount shows a steady upward trend from 2016 to 2025. T
 > Which category has the highest total spending? Which has grown the fastest over 10 years?
 
 _The category with the highest total spending is Groceries, with approximately 818 million in total spending._
-_From the yearly category spending table, Electronics and Education appear to show strong growth over time, likely due to increased spending on technology and educational services._
+_Over the 10-year period, categories such as Electronics and Education show noticeable growth trends, indicating increasing spending on technology and educational services._
 
 > Compare spending between family members. Who spends the most? On what?
 
@@ -74,14 +74,39 @@ _The family member who spends the most is MEM01, with approximately 1.96 billion
 
 > What percentage of transactions fall in each spending tier? Has this distribution changed over the years?
 
-|spending_tier|   count|        percentage|
-|-------------|--------|------------------|
-|        small|35059036| 49.53261597697125|
-|       medium|22158435| 31.30620167381895|
-|        micro| 9910619|14.002064546813974|
-|        large| 3651608| 5.159117802395823|
+_Spending Tier Distribution_
+| Spending Tier | Count      | Percentage |
+| ------------- | ---------- | ---------- |
+| medium        | 22,158,435 | 31.31%     |
+| small         | 35,059,036 | 49.53%     |
+| micro         | 9,910,619  | 14.00%     |
+| large         | 3,651,608  | 5.16%      |
 
-_The distribution of spending tiers remains relatively stable across the years. Small transactions consistently represent the largest portion of purchases, followed by medium transactions. Large transactions remain a small percentage each year, indicating that most family spending consists of frequent low-value purchases._
+_Spending Tier Distribution by Year (showing only 20 rows)_
+| Year | Spending Tier | Count     |
+| ---- | ------------- | --------- |
+| 2016 | large         | 331,171   |
+| 2016 | medium        | 1,936,568 |
+| 2016 | small         | 3,682,258 |
+| 2016 | micro         | 1,142,412 |
+| 2017 | micro         | 1,103,402 |
+| 2017 | medium        | 1,994,917 |
+| 2017 | large         | 336,843   |
+| 2017 | small         | 3,634,845 |
+| 2018 | medium        | 2,056,658 |
+| 2018 | micro         | 1,067,644 |
+| 2018 | large         | 345,084   |
+| 2018 | small         | 3,597,596 |
+| 2019 | micro         | 1,035,518 |
+| 2019 | medium        | 2,122,304 |
+| 2019 | small         | 3,564,126 |
+| 2019 | large         | 353,069   |
+| 2020 | micro         | 1,006,484 |
+| 2020 | small         | 3,536,737 |
+| 2020 | large         | 361,125   |
+| 2020 | medium        | 2,190,394 |
+
+_Approximately 49.53% of transactions fall into the small spending tier, followed by 31.31% in the medium tier, 14.00% in the micro tier, and 5.16% in the large tier. This shows that the majority of transactions are relatively small in value. When examining the yearly distribution, the pattern remains consistent across the years with small and medium transactions dominating the dataset. There is no significant structural change in the distribution, indicating stable consumer spending behavior over time._
 
 ---
 
@@ -93,7 +118,7 @@ _The family has some questions about how the system works._
 
 > "We just found out one of the merchants changed their name last year. Where in the pipeline do we update this, and what layers need to be reprocessed?"
 
-_Your answer (3–5 sentences):_
+_The merchant name should be updated in the merchant reference data (such as the merchants.csv file). After updating the merchant information, the pipeline should be rerun to regenerate the staging and analytics layers. The raw transaction data does not need to be modified because it stores the original records. Reprocessing ensures that reports reflect the updated merchant name._
 
 ---
 
@@ -101,7 +126,7 @@ _Your answer (3–5 sentences):_
 
 > "Our daughter started college and has her own credit card now. How do we add a new family member to the system without breaking existing data?"
 
-_Your answer (3–5 sentences):_
+_A new family member can be added by inserting a new record in the members reference data wth a new member id. Future transactions will reference this new member id when they are ingested. Historical transactions remain unchanged because they are already reference existing members. This approach prevents breaking existing data._
 
 ---
 
@@ -109,7 +134,7 @@ _Your answer (3–5 sentences):_
 
 > "We want to know our average monthly grocery spending. Walk us through exactly which transformations and joins produce this number."
 
-_Your answer (3–5 sentences):_
+_The pipeline first loads transaction data from the raw layer. The transactions are then joined with the category table to identify which transactions belong to the groceries category. Next, the data is aggregated by month to calculate total grocery spending per month. Finally, the average monthly grocery spending is calculated from these monthly totals._
 
 ---
 
@@ -117,7 +142,7 @@ _Your answer (3–5 sentences):_
 
 > "Last month's bank export had 500 duplicate transactions. How does your pipeline handle this? If it doesn't yet, what would you add?"
 
-_Your answer (3–5 sentences):_
+_Duplicate transactions should be handled in the staging layer during data cleaning. A deduplicaion step can be added using a unique transcation identifier such as ransaction id. For example, using the dropDuplicates() to remove repeated records. This prevents duplicate transactions from affecting analytics results._
 
 ---
 
@@ -127,7 +152,7 @@ _Your answer (3–5 sentences):_
 
 _Hint: Think about RPO (Recovery Point Objective) and RTO (Recovery Time Objective)._
 
-_Your answer (3–5 sentences):_
+_The raw data layer acts as the primary backup because it stores the original source data. If the staging or analytics layers are lost, they can be regenerated by rerunning the pipeline from the raw layer. This means the Recovery Point Objective (RPO) is minimal since raw data is preserved. The Recovery Time Objective (RTO) depends on how long it takes to rebuild the pipeline outputs._
 
 ---
 
@@ -139,7 +164,7 @@ _The family's developer friend has some technical questions._
 
 > "If we set up CI/CD for this project, what would the pipeline look like? What gets tested automatically, and what triggers the tests?"
 
-_Your answer (3–5 sentences):_
+_In a CI/CD pipeline, automated tests run whenever code is pushed to the repository. These tests can include unit tests for data transformations and validation checks for schema consistency. If all tests pass, the updated pipeline code can be deployed automatically. This helps ensure that pipeline changes do not break existing functionality._
 
 ---
 
@@ -147,7 +172,7 @@ _Your answer (3–5 sentences):_
 
 > "We want this pipeline to run automatically every month when the bank exports new transactions. How would you set this up? Draw the DAG."
 
-_Your answer (3–5 sentences):_
+_The pipeline can be scheduled using a workflow orchestration tool such as Apache Airflow or a cron job. Each step in the DAG performs tasks such as ingestion, cleaning, enrichment, and analytics generation._
 
 _Draw your DAG below (text-based diagram):_
 
@@ -182,7 +207,11 @@ _The family wants your professional opinion._
 
 _Show your work:_
 
-_Your answer (3–5 sentences):_
+| average_yoy_percent |
+| ---- |
+| 2.0 |
+
+_The average transaction amount shows a steady upward trend over the years. The year-over-year growth rate is approximately 2.0% on average, indicating a consistent increase in transaction prices. When examining the category-level trends, most categories exhibit a similar gradual increase each year. This suggests that the price growth pattern is broadly consistent across categories rather than being driven by only a few specific ones._
 
 ---
 
@@ -190,9 +219,11 @@ _Your answer (3–5 sentences):_
 
 > "Based on your summary tables, give us 3 actionable recommendations for how we can reduce spending next year."
 
-1. _Recommendation 1:_
-2. _Recommendation 2:_
-3. _Recommendation 3:_
+1. _Reduce discretionary spending such as Dining Out and Entertainment. These categories account for a large portion of spending and can be reduced by cooking at home more often or limiting entertainment expenses._
+
+2. _Review electronics and clothing purchases. These categories show relatively high total spending, so planning purchases in advance and avoiding impulse buying could significantly lower expenses._
+
+3. _Increase the portion of income allocated to savings and investments. Redirecting a small percentage of discretionary spending into Savings Deposit or Investment categories can help improve long-term financial stability._
 
 ---
 
@@ -200,10 +231,10 @@ _Your answer (3–5 sentences):_
 
 > "Which spending categories are 'needs' vs 'wants'? What percentage of our total spending goes to each?"
 
-_Your answer (3–5 sentences):_
+_Needs include essential categories such as groceries, rent or mortgage, utilities, healthcare, insurance, transportation, gasoline, and education. Wants include discretionary categories such as dining out, entertainment, clothing, electronics, gifts, personal care, subscriptions, and home improvement. Savings include categories such as savings deposits and investments. Based on the aggregated spending totals, approximately 49.77% of total spending goes toward needs, 43.82% toward wants, and 6.42% toward savings. This indicates that while most spending is allocated to essential expenses, a substantial portion is still used for discretionary purchases._
 
-| Budget Type | Total Spending | Percentage |
-|-------------|---------------|------------|
-| Needs | | |
-| Wants | | |
-| Savings | | |
+| Budget Type | Total Spending      | Percentage |
+| ----------- | ------------------- | ---------- |
+| Needs       | 2.160425364359854E9 | 49.77%     |
+| Wants       | 1.902196973492909E9 | 43.82%     |
+| Savings     | 2.784890597782593E8 | 6.42%      |

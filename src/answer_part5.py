@@ -35,10 +35,42 @@ def main():
 
     avg_with_change = avg_with_change.withColumn(
         "yoy_percent",
-        ((col("avg_amount") - col("prev_year")) / col("prev_year")) * 100
+        round(((col("avg_amount") - col("prev_year")) / col("prev_year")) * 100, 2)
     )
 
     avg_with_change.orderBy("year").show()
+
+    # ==============================
+    # Q8: Price Trend Analysis
+    # ==============================
+
+    print("\n===== Q8: Average YoY Growth Rate =====")
+
+    avg_growth = avg_with_change.select(
+        round(mean("yoy_percent"), 2).alias("average_yoy_percent")
+    )
+
+    avg_growth.show()
+
+    print("\n===== Q8: Category Growth Trend =====")
+
+    category_year = monthly.groupBy("year", "category_name") \
+        .sum("total_amount") \
+        .withColumnRenamed("sum(total_amount)", "yearly_total")
+
+    window_cat = Window.partitionBy("category_name").orderBy("year")
+
+    category_growth = category_year.withColumn(
+        "prev_year",
+        lag("yearly_total").over(window_cat)
+    )
+
+    category_growth = category_growth.withColumn(
+        "yoy_percent",
+        round(((col("yearly_total") - col("prev_year")) / col("prev_year")) * 100, 2)
+    )
+
+    category_growth.orderBy("category_name", "year").show()
 
     print("\n===== Total Spending by Category =====")
     monthly.groupBy("category_name") \
@@ -87,6 +119,58 @@ def main():
         .sum("total_amount") \
         .orderBy(desc("sum(total_amount)")) \
         .show()
+    
+    print("\n===== Q10: Needs vs Wants Analysis =====")
+    category_totals = monthly.groupBy("category_name") \
+        .sum("total_amount") \
+        .withColumnRenamed("sum(total_amount)", "total_spending")
+
+    needs = [
+        "Groceries",
+        "Rent/Mortgage",
+        "Utilities",
+        "Healthcare",
+        "Insurance",
+        "Transportation",
+        "Gasoline",
+        "Education"
+    ]
+
+    wants = [
+        "Dining Out",
+        "Entertainment",
+        "Clothing",
+        "Electronics",
+        "Gifts",
+        "Personal Care",
+        "Subscriptions",
+        "Home Improvement"
+    ]
+
+    savings = [
+        "Savings Deposit",
+        "Investment"
+    ]
+
+    category_totals = category_totals.withColumn(
+        "budget_type",
+        when(col("category_name").isin(needs), "Needs")
+        .when(col("category_name").isin(wants), "Wants")
+        .when(col("category_name").isin(savings), "Savings")
+    )
+
+    budget_summary = category_totals.groupBy("budget_type") \
+        .sum("total_spending") \
+        .withColumnRenamed("sum(total_spending)", "total_spending")
+
+    total_spending = budget_summary.agg(sum("total_spending")).collect()[0][0]
+
+    budget_summary = budget_summary.withColumn(
+        "percentage",
+        col("total_spending") / total_spending * 100
+    )
+
+    budget_summary.show()
 
     spark.stop()
 
