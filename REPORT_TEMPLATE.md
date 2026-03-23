@@ -61,7 +61,7 @@ _Your answer here. Show your calculation:_
 | 2024 | 65.54140422011058| 1.7533882722641632|
 | 2025 | 66.94052935095615| 2.1347194914329766|
 
-_The average transaction amount shows a steady upward trend from 2016 to 2025. The year-over-year growth rate is approximately around 2% per year. This gradual increase is likely due to inflation and rising costs of goods and services, which causes the average transaction value to increase over time._
+_The average transaction amount shows a steady upward trend from 2016 to 2025. The year-over-year growth rate is around 2% per year. This gradual increase is likely due to inflation and rising costs of goods and services, which causes the average transaction value to increase over time._
 
 > Which category has the highest total spending? Which has grown the fastest over 10 years?
 
